@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+
+  manager:
+    container_name: container-manager
+    hostname: manager
+    restart: always
+    build:
+      context: .
+      dockerfile: manager/Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - lab1_network
+  
+  worker:
+    container_name: container-worker
+    hostname: worker
+    build:
+      context: .
+      dockerfile: worker/Dockerfile
+    ports:
+      - "8081:8081"
+    networks:
+      - lab1_network
+    depends_on:
+      - manager
+
+networks:
+  lab1_network:
+    driver: bridge
